@@ -7,6 +7,8 @@ var repoName = process.argv[3];
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
+//function to get data from a specified repo owner and repo name
+
 function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
@@ -20,13 +22,15 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
+//function that takes in an image url and pipes it into the avatars folder
+
 function downloadImageByURL(url, filePath) {
   return request.get(url).pipe(fs.createWriteStream(filePath));
 }
 
+//calling getRepoContributors and passing in an anonymous callback function to loop through a collection of avatars and pipe them into the avatars folder
 
 getRepoContributors(repoOwner, repoName, function(err, result) {
-  // console.log("Errors:", err);
 
   if (repoOwner) {
     for (var i = 0; i < result.length; i++) {
@@ -37,5 +41,4 @@ getRepoContributors(repoOwner, repoName, function(err, result) {
   } else {
     console.log("Please specify a repo owner and repo name!")
   }
-
 });
